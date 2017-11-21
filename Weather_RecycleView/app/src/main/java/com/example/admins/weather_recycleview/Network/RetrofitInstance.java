@@ -14,7 +14,7 @@ public class RetrofitInstance {
     public static Retrofit getInstance() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://samples.openweathermap.org/")
+                    .baseUrl("http://api.openweathermap.org/data/2.5/forecast/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

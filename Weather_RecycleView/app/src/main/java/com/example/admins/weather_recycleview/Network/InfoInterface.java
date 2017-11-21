@@ -11,7 +11,7 @@ import retrofit2.http.Query;
  */
 
 public interface InfoInterface {
-    @GET("data/2.5/forecast/daily")
+    @GET("daily")
     Call<InfoJSON> getInfo(
             @Query("q") String cityName,
             @Query("appid") String appid);
