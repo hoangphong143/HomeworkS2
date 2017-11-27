@@ -4,19 +4,16 @@ package com.example.admins.freemusic.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.admins.freemusic.Adapter.MusicTypeAdapter;
 import com.example.admins.freemusic.Databases.MusicTypeModel;
-import com.example.admins.freemusic.MainActivity;
 import com.example.admins.freemusic.NetWorks.MusicTypeResponseJSON;
-import com.example.admins.freemusic.NetWorks.MusicTypesInterface;
+import com.example.admins.freemusic.NetWorks.MusicInterface;
 import com.example.admins.freemusic.NetWorks.RetrofitInstance;
 import com.example.admins.freemusic.R;
 
@@ -56,16 +53,25 @@ public class MusicTypeBlankFragment extends Fragment {
         context = getContext();
 
 
-        musicTypeAdapter = new MusicTypeAdapter(musicTypeModelList);
+        musicTypeAdapter = new MusicTypeAdapter(musicTypeModelList, getContext());
         rvMusicType.setAdapter(musicTypeAdapter);
 
-        rvMusicType.setLayoutManager(new LinearLayoutManager(context));
+        GridLayoutManager gridLayoutManager= new GridLayoutManager(
+                getContext(),2
+        );
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return (position % 3==0 ? 2 : 1);
+            }
+        });
+        rvMusicType.setLayoutManager(gridLayoutManager);
         loadData();
         return view;
     }
 
     private void loadData() {
-        MusicTypesInterface musicTypesInterface = RetrofitInstance.getInstance().create(MusicTypesInterface.class);
+        MusicInterface musicTypesInterface = RetrofitInstance.getInstance().create(MusicInterface.class);
         musicTypesInterface.getMusicTypes().enqueue(new Callback<MusicTypeResponseJSON>() {
             @Override
             public void onResponse(Call<MusicTypeResponseJSON> call, Response<MusicTypeResponseJSON> response) {
