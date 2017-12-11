@@ -2,24 +2,99 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_main1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rl_main"
+
     tools:context="com.example.admins.freemusic.Activity.MainActivity">
 
-    <android.support.design.widget.TabLayout
+    <RelativeLayout
+        android:id="@+id/rl_mini"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:id="@+id/tab"/>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_below="@+id/tab"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@color/colorPrimary" />
+        android:background="#8394f1"
+        android:visibility="gone">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sb_mini">
+            <ImageView
+                android:id="@+id/iv_song"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fb_mini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+
+                app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+
+            <TextView
+                android:id="@+id/tv_song"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/iv_song"
+
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/iv_song"
+                android:layout_toStartOf="@id/fb_mini"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Song Name"
+                android:textColor="#ffff"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_singer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_song"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/iv_song"
+                android:layout_toStartOf="@+id/fb_mini"
+                android:text="Artist"
+                android:textColor="#fff" />
+
+
+        </RelativeLayout>
+
+
+        <SeekBar
+            android:id="@+id/sb_mini"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:thumb="@null" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rl_mini">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/colorPrimary" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

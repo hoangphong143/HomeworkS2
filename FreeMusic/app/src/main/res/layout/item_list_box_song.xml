@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="8dp"
+        android:id="@+id/iv_song"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Song Name"
+        android:layout_toEndOf="@+id/iv_song"
+        android:layout_alignTop="@+id/iv_song"
+        android:textSize="16sp"
+        android:textColor="#ffff"
+        android:maxLines="1"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:id="@+id/tv_song"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/iv_song"
+        android:layout_below="@+id/tv_song"
+        android:textColor="#fff"
+        android:layout_marginEnd="8dp"
+        android:id="@+id/tv_singer"/>
+
+
+</RelativeLayout>

@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.admins.freemusic.Fragments.DownloadFragment;
 import com.example.admins.freemusic.Fragments.FavouriteFragment;
-import com.example.admins.freemusic.Fragments.MusicTypeBlankFragment;
+import com.example.admins.freemusic.Fragments.MusicTypeFragment;
 
 /**
  * Created by Admins on 11/19/2017.
@@ -21,7 +21,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public android.support.v4.app.Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new MusicTypeBlankFragment();
+                return new MusicTypeFragment();
             case 1:
                 return new FavouriteFragment();
             case 2:
