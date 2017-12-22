@@ -9,7 +9,11 @@ import com.example.admins.freemusic.Databases.TopSongModel;
 public class OnClickTopSongEvent {
     public TopSongModel topSongModel;
 
+
     public OnClickTopSongEvent(TopSongModel topSongModel) {
         this.topSongModel = topSongModel;
+
     }
+
+
 }

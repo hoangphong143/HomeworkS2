@@ -14,10 +14,8 @@ import android.widget.TextView;
 
 import com.example.admins.freemusic.Adapter.ViewPagerAdapter;
 import com.example.admins.freemusic.Databases.TopSongModel;
-import com.example.admins.freemusic.Events.OnClickMusicTypeEvent;
 import com.example.admins.freemusic.Events.OnClickTopSongEvent;
 import com.example.admins.freemusic.Fragments.PlayerFragment;
-import com.example.admins.freemusic.NetWorks.MusicInterface;
 import com.example.admins.freemusic.R;
 import com.example.admins.freemusic.ultis.MusicHandler;
 import com.example.admins.freemusic.ultis.Ultis;
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "OnReceivedTopSong: " + topSongModel.song);
         rlMini.setVisibility(View.VISIBLE);
 
-        tvSinger.setText(topSongModel.signer);
+        tvSinger.setText(topSongModel.singer);
         tvSong.setText(topSongModel.song);
 
         if (topSongModel.isDownloaded) {

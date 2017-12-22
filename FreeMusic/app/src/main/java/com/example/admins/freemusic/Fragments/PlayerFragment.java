@@ -1,10 +1,9 @@
 package com.example.admins.freemusic.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +21,16 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 
 public class PlayerFragment extends Fragment {
+    private static final String TAG = PlayerFragment.class.toString();
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.iv_down)
@@ -50,6 +53,9 @@ public class PlayerFragment extends Fragment {
     FloatingActionButton fbPlay;
     @BindView(R.id.sb_song)
     SeekBar sb;
+    TopSongModel topSongModel;
+
+
     public PlayerFragment() {
         // Required empty public constructor
     }
@@ -65,6 +71,7 @@ public class PlayerFragment extends Fragment {
 
         setupUI(view);
         EventBus.getDefault().register(this);
+
 
         return view;
     }
@@ -87,12 +94,30 @@ public class PlayerFragment extends Fragment {
 
     }
 
+    public static void setData(TopSongModel topSongModel, int num) {
+        int songPos = 0;
+
+
+        for (int i = 0; i < TopSongFragment.topSongModels.size(); i++) {
+
+            if ((topSongModel.song + topSongModel.singer).equals
+                    (TopSongFragment.topSongModels.get(i).song + TopSongFragment.topSongModels.get(i).singer)) {
+                songPos = i;
+                Log.d(TAG, "setData: " + songPos);
+            }
+
+
+        }
+        EventBus.getDefault().postSticky(new OnClickTopSongEvent(TopSongFragment.topSongModels.get(songPos + num)));
+    }
+
+
     @Subscribe(sticky = true)
-    public void onMiniPlayerClicked(OnClickTopSongEvent onClickTopSongEvent){
-        final TopSongModel topSongModel= onClickTopSongEvent.topSongModel;
+    public void onMiniPlayerClicked(final OnClickTopSongEvent onClickTopSongEvent) {
+        final TopSongModel topSongModel = onClickTopSongEvent.topSongModel;
 
         tvSongName.setText(topSongModel.song);
-        tvSingerName.setText(topSongModel.signer);
+        tvSingerName.setText(topSongModel.singer);
         Picasso.with(getContext()).load(topSongModel.largeImage).transform(new CropCircleTransformation()).into(ivSong);
 
 
@@ -100,9 +125,28 @@ public class PlayerFragment extends Fragment {
         ivDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DownloadHandler.DownloadSong(getContext(),topSongModel );
+                DownloadHandler.DownloadSong(getContext(), topSongModel);
+
+
+            }
+        });
+        ivNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setData(topSongModel, 1);
+
+
+            }
+        });
+        ivPre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setData(topSongModel, -1);
             }
         });
 
+
     }
+
+
 }

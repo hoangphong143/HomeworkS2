@@ -1,11 +1,9 @@
 package com.example.admins.freemusic.Notifications;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.media.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.example.admins.freemusic.Activity.MainActivity;
@@ -28,7 +26,7 @@ public class MusicNotification {
 
         remoteViews = new RemoteViews(context.getPackageName(), R.layout.notificationayout);
         remoteViews.setTextViewText(R.id.tv_song, topSongModel.song);
-        remoteViews.setTextViewText(R.id.tv_singer, topSongModel.signer);
+        remoteViews.setTextViewText(R.id.tv_singer, topSongModel.singer);
         remoteViews.setImageViewResource(R.id.iv_play, R.drawable.ic_pause_black_24dp);
 
         Intent intent = new Intent(context, MainActivity.class);

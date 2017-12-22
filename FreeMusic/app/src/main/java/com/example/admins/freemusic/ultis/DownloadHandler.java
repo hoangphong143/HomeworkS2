@@ -3,7 +3,6 @@ package com.example.admins.freemusic.ultis;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.admins.freemusic.Databases.TopSongModel;
@@ -21,7 +20,7 @@ public class DownloadHandler {
 
     public static void DownloadSong(final Context context, final TopSongModel topSongModel) {
         Uri downloadUri = Uri.parse(topSongModel.url);
-        final Uri destinationUri = Uri.parse(context.getExternalCacheDir().toString() + "/" + topSongModel.song +"-"+ topSongModel.signer +".mp3");
+        final Uri destinationUri = Uri.parse(context.getExternalCacheDir().toString() + "/" + topSongModel.song +"-"+ topSongModel.singer +".mp3");
         DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
                 .setRetryPolicy(new DefaultRetryPolicy())
                 .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)

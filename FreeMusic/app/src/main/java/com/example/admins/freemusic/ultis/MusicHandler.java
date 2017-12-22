@@ -9,13 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admins.freemusic.Databases.TopSongModel;
+import com.example.admins.freemusic.Fragments.PlayerFragment;
 import com.example.admins.freemusic.NetWorks.MusicInterface;
 import com.example.admins.freemusic.NetWorks.RetrofitInstance;
 import com.example.admins.freemusic.NetWorks.SearchSongJSON;
 import com.example.admins.freemusic.Notifications.MusicNotification;
 import com.example.admins.freemusic.R;
-
-import java.util.logging.Handler;
 
 import hybridmediaplayer.HybridMediaPlayer;
 import retrofit2.Call;
@@ -33,7 +32,7 @@ public class MusicHandler {
 
     public static void getSearchSong(final TopSongModel topSongModel, final Context context) {
         MusicInterface musicInterface = RetrofitInstance.getInstance().create(MusicInterface.class);
-        musicInterface.getSearchSong(topSongModel.song + " " + topSongModel.signer)
+        musicInterface.getSearchSong(topSongModel.song + " " + topSongModel.singer)
 
                 .enqueue(new Callback<SearchSongJSON>() {
                     @Override
@@ -58,7 +57,7 @@ public class MusicHandler {
                 });
     }
 
-    public static void playMusic(Context context, TopSongModel topSongModel) {
+    public static void playMusic(Context context, final TopSongModel topSongModel) {
 
         if (hybridMediaPlayer != null) {
             hybridMediaPlayer.pause();
@@ -74,6 +73,13 @@ public class MusicHandler {
             @Override
             public void onPrepared(HybridMediaPlayer hybridMediaPlayer) {
                 hybridMediaPlayer.play();
+            }
+        });
+
+        hybridMediaPlayer.setOnCompletionListener(new HybridMediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(HybridMediaPlayer hybridMediaPlayer) {
+                PlayerFragment.setData(topSongModel,1);
             }
         });
 

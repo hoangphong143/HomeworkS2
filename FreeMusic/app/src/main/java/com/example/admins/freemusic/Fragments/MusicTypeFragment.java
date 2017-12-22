@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.admins.freemusic.Adapter.MusicTypeAdapter;
+import com.example.admins.freemusic.Databases.DatabaseHandle;
 import com.example.admins.freemusic.Databases.MusicTypeModel;
 import com.example.admins.freemusic.NetWorks.MusicTypeResponseJSON;
 import com.example.admins.freemusic.NetWorks.MusicInterface;
@@ -56,17 +57,22 @@ public class MusicTypeFragment extends Fragment {
         musicTypeAdapter = new MusicTypeAdapter(musicTypeModelList, getContext());
         rvMusicType.setAdapter(musicTypeAdapter);
 
-        GridLayoutManager gridLayoutManager= new GridLayoutManager(
-                getContext(),2
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(
+                getContext(), 2
         );
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return (position % 3==0 ? 2 : 1);
+                return (position % 3 == 0 ? 2 : 1);
             }
         });
         rvMusicType.setLayoutManager(gridLayoutManager);
-        loadData();
+        if (DatabaseHandle.getMusicType().size() == 0) {
+            loadData();
+        } else {
+            musicTypeModelList.addAll(DatabaseHandle.getMusicType());
+            musicTypeAdapter.notifyDataSetChanged();
+        }
         return view;
     }
 
@@ -86,6 +92,7 @@ public class MusicTypeFragment extends Fragment {
                             context.getPackageName()
                     );
                     musicTypeModelList.add(musicTypeModel);
+                    DatabaseHandle.addMusicType(musicTypeModel);
 
 
                 }

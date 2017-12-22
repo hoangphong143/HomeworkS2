@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.admins.freemusic.Databases.TopSongModel;
 import com.example.admins.freemusic.Events.OnClickTopSongEvent;
-import com.example.admins.freemusic.Notifications.MusicNotification;
 import com.example.admins.freemusic.R;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +27,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class TopSongAdater extends RecyclerView.Adapter<TopSongAdater.TopSongViewHolder> {
     Context context;
-    List<TopSongModel>topSongModelList;
+    List<TopSongModel> topSongModelList;
 
     public TopSongAdater(Context context, List<TopSongModel> topSongModelList) {
         this.context = context;
@@ -37,14 +36,14 @@ public class TopSongAdater extends RecyclerView.Adapter<TopSongAdater.TopSongVie
 
     @Override
     public TopSongViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater= LayoutInflater.from(context);
-        View itemView= layoutInflater.inflate(R.layout.item_list_box_song, parent, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View itemView = layoutInflater.inflate(R.layout.item_list_box_song, parent, false);
         return new TopSongViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(TopSongViewHolder holder, int position) {
-        holder.setData(topSongModelList.get(position));
+        holder.setData(topSongModelList.get(position), position);
 
     }
 
@@ -67,20 +66,21 @@ public class TopSongAdater extends RecyclerView.Adapter<TopSongAdater.TopSongVie
         public TopSongViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            view= itemView;
+            view = itemView;
         }
 
 
-
-        public void setData(final TopSongModel topSongModel) {
+        public void setData(final TopSongModel topSongModel, final int position) {
             Picasso.with(context).load(topSongModel.smallImage).transform(new CropCircleTransformation()).into(ivSong);
             tvSong.setText(topSongModel.song);
-            tvSinger.setText(topSongModel.signer);
+            tvSinger.setText(topSongModel.singer);
+
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     EventBus.getDefault().postSticky(new OnClickTopSongEvent(topSongModel));
+
 
                 }
             });

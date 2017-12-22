@@ -2,7 +2,7 @@ package com.example.admins.freemusic.Fragments;
 
 
 import android.annotation.SuppressLint;
-import android.nfc.Tag;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -10,19 +10,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admins.freemusic.Adapter.TopSongAdater;
+import com.example.admins.freemusic.Databases.DatabaseHandle;
 import com.example.admins.freemusic.Databases.MusicTypeModel;
 import com.example.admins.freemusic.Databases.TopSongModel;
 import com.example.admins.freemusic.Events.OnClickMusicTypeEvent;
+import com.example.admins.freemusic.Events.OnUpdateRvFav;
 import com.example.admins.freemusic.NetWorks.MusicInterface;
 import com.example.admins.freemusic.NetWorks.RetrofitInstance;
 import com.example.admins.freemusic.NetWorks.TopSongResponse;
@@ -38,7 +38,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,7 +65,7 @@ public class TopSongFragment extends Fragment {
     @BindView(R.id.avLoad)
     AVLoadingIndicatorView avLoad;
     public TopSongAdater topSongAdater;
-    public List<TopSongModel> topSongModels = new ArrayList<>();
+    public static List<TopSongModel> topSongModels = new ArrayList<>();
 
     public MusicTypeModel musicTypeModel;
 
@@ -92,6 +91,7 @@ public class TopSongFragment extends Fragment {
     }
 
     private void loadData() {
+        topSongModels.clear();
         MusicInterface musicInterface = RetrofitInstance.getInstance().create(MusicInterface.class);
         musicInterface.getTopSongs(musicTypeModel.id).enqueue(new Callback<TopSongResponse>() {
             @Override
@@ -102,7 +102,7 @@ public class TopSongFragment extends Fragment {
 
                 for (int i = 0; i < entryJSONSList.size(); i++) {
                     TopSongModel topSongModel = new TopSongModel();
-                    topSongModel.signer = entryJSONSList.get(i).artis.label;
+                    topSongModel.singer = entryJSONSList.get(i).artis.label;
                     topSongModel.song = entryJSONSList.get(i).name.label;
                     topSongModel.smallImage = entryJSONSList.get(i).image.get(2).label;
                     topSongModels.add(topSongModel);
@@ -156,10 +156,29 @@ public class TopSongFragment extends Fragment {
         rvSong.setLayoutManager(new LinearLayoutManager(getContext()));
         rvSong.setItemAnimator(new SlideInLeftAnimator());
         rvSong.getItemAnimator().setAddDuration(300);
-       avLoad.show();
+        avLoad.show();
 
+        if (musicTypeModel.isFavourite) {
+            ivFav.setColorFilter(Color.RED);
+
+        } else {
+            ivFav.setColorFilter(Color.WHITE);
+        }
+
+        ivFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseHandle.updateFavourite(musicTypeModel);
+                if (musicTypeModel.isFavourite) {
+                    ivFav.setColorFilter(Color.RED);
+
+                } else {
+                    ivFav.setColorFilter(Color.WHITE);
+                }
+                EventBus.getDefault().postSticky(new OnUpdateRvFav());
+            }
+        });
 
 
     }
-
 }
